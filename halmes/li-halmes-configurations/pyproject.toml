@@ -1,0 +1,41 @@
+[project]
+name = "li-halmes-configurations"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    
+]
+requires-python = ">=3.12"
+dependencies = [
+    "li-amber-judge",
+    "li-basic-utilities",
+    "li-bingo-judge",
+    "li-coco-input-provider",
+    "li-coco-judge",
+    "li-halmes-model",
+    "li-mmhalbench-judge",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "torch>=2.11.0",
+    "variable-declaration-checker>=0.1.2",
+]
+
+[tool.uv.sources]
+li-basic-utilities = { path = "../../lib/utilities/li-basic-utilities", editable = true }
+li-coco-input-provider = { path = "../../lib/data-loading/coco/li-coco-input-provider", editable = true }
+li-coco-judge = { path = "../../lib/data-loading/coco/li-coco-judge", editable = true }
+li-halmes-model = { path = "../../lib/halmes/li-halmes-model", editable = true }
+li-amber-judge = { path = "../../lib/data-loading/amber/li-amber-judge", editable = true }
+li-mmhalbench-judge = { path = "../../lib/data-loading/mmhalbench/li-mmhalbench-judge", editable = true }
+li-bingo-judge = { path = "../../lib/data-loading/bingo/li-bingo-judge", editable = true }
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true

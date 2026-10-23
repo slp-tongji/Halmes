@@ -1,0 +1,30 @@
+[project]
+name = "li-halmes-split-datasets"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    
+]
+requires-python = ">=3.12"
+dependencies = [
+    "li-halmes-configurations",
+    "li-halmes-data-preparer",
+    "torch>=2.11.0",
+    "more-itertools>=11.0.2",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = []
+
+[tool.uv.sources]
+li-halmes-data-preparer = { path = "../../lib/halmes/li-halmes-data-preparer", editable = true }
+li-halmes-configurations = { path = "../li-halmes-configurations", editable = true }
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true

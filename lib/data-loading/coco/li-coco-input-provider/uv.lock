@@ -1,0 +1,199 @@
+version = 1
+revision = 3
+requires-python = ">=3.12"
+
+[[package]]
+name = "csharp-like-file"
+version = "0.0.8"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple/" }
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/55/f7/140b7b6dce0b3ce72305ea3bcd3db02902146eeae4a6b928338304d48f0d/csharp_like_file-0.0.8.tar.gz", hash = "sha256:e936f3cbda6140dd24258ddc851a572a3e21101be8e31a2cf5090ba51977f271" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/92/ab/d91d94423bc0c80c0a391d9d06472e9b5f1015acaed9c0c838db468a7128/csharp_like_file-0.0.8-py3-none-any.whl", hash = "sha256:270b2ce9ef34151c0f4ebc3966f4e3d902d51d88e0ab17b1f893ff41ac08464f" },
+]
+
+[[package]]
+name = "flake8"
+version = "7.3.0"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple/" }
+dependencies = [
+    { name = "mccabe" },
+    { name = "pycodestyle" },
+    { name = "pyflakes" },
+]
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/9b/af/fbfe3c4b5a657d79e5c47a2827a362f9e1b763336a52f926126aa6dc7123/flake8-7.3.0.tar.gz", hash = "sha256:fe044858146b9fc69b551a4b490d69cf960fcb78ad1edcb84e7fbb1b4a8e3872" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/9f/56/13ab06b4f93ca7cac71078fbe37fcea175d3216f31f85c3168a6bbd0bb9a/flake8-7.3.0-py2.py3-none-any.whl", hash = "sha256:b9696257b9ce8beb888cdbe31cf885c90d31928fe202be0889a7cdafad32f01e" },
+]
+
+[[package]]
+name = "li-basic-utilities"
+version = "0.1.0"
+source = { editable = "../../../utilities/li-basic-utilities" }
+dependencies = [
+    { name = "csharp-like-file" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "csharp-like-file", specifier = ">=0.0.8" }]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "flake8", specifier = ">=7.3.0" },
+    { name = "variable-declaration-checker", specifier = ">=0.1.2" },
+]
+
+[[package]]
+name = "li-coco-input-provider"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "li-data-loader" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "variable-declaration-checker" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "li-data-loader", editable = "../../li-data-loader" }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "variable-declaration-checker", specifier = ">=0.1.2" }]
+
+[[package]]
+name = "li-data-loader"
+version = "0.1.0"
+source = { editable = "../../li-data-loader" }
+dependencies = [
+    { name = "li-llm-messages" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "li-llm-messages", editable = "../../../utilities/li-llm-messages" }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "variable-declaration-checker", specifier = ">=0.1.2" }]
+
+[[package]]
+name = "li-image-operating"
+version = "0.1.0"
+source = { editable = "../../../utilities/li-image-operating" }
+dependencies = [
+    { name = "li-basic-utilities" },
+    { name = "mime-bytes-py" },
+    { name = "tomlkit" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "li-basic-utilities", editable = "../../../utilities/li-basic-utilities" },
+    { name = "mime-bytes-py", specifier = ">=0.1.1" },
+    { name = "tomlkit", specifier = ">=0.14.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "matplotlib", specifier = ">=3.10.8" },
+    { name = "opencv-python", specifier = ">=4.13.0.92" },
+    { name = "pillow", specifier = ">=12.1.1" },
+    { name = "variable-declaration-checker", specifier = ">=0.1.2" },
+]
+
+[[package]]
+name = "li-llm-messages"
+version = "0.1.0"
+source = { editable = "../../../utilities/li-llm-messages" }
+dependencies = [
+    { name = "li-image-operating" },
+    { name = "li-logging" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "li-image-operating", editable = "../../../utilities/li-image-operating" },
+    { name = "li-logging", editable = "../../../utilities/li-logging" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "variable-declaration-checker", specifier = ">=0.1.2" }]
+
+[[package]]
+name = "li-logging"
+version = "0.1.0"
+source = { editable = "../../../utilities/li-logging" }
+dependencies = [
+    { name = "li-basic-utilities" },
+    { name = "mime-bytes-py" },
+    { name = "tomlkit" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "li-basic-utilities", editable = "../../../utilities/li-basic-utilities" },
+    { name = "mime-bytes-py", specifier = ">=0.1.1" },
+    { name = "tomlkit", specifier = ">=0.14.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "flake8", specifier = ">=7.3.0" },
+    { name = "variable-declaration-checker", specifier = ">=0.1.2" },
+]
+
+[[package]]
+name = "mccabe"
+version = "0.7.0"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple/" }
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/e7/ff/0ffefdcac38932a54d2b5eed4e0ba8a408f215002cd178ad1df0f2806ff8/mccabe-0.7.0.tar.gz", hash = "sha256:348e0240c33b60bbdf4e523192ef919f28cb2c3d7d5c7794f74009290f236325" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/27/1a/1f68f9ba0c207934b35b86a8ca3aad8395a3d6dd7921c0686e23853ff5a9/mccabe-0.7.0-py2.py3-none-any.whl", hash = "sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e" },
+]
+
+[[package]]
+name = "mime-bytes-py"
+version = "0.1.1"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple/" }
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/17/7d/a7ab8929bf1f392c507731300834d45cbb99fe0d65d56963ade5b4d074df/mime_bytes_py-0.1.1.tar.gz", hash = "sha256:148fcf411bf37603f203f41ddead60c60bc6ed212bcc6454ba0127c7d1f864e8" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/52/93/9e303e9b886c1d5d743e6c3c775e2727f7ffca166505c34501bc2ae11569/mime_bytes_py-0.1.1-py3-none-any.whl", hash = "sha256:1eb93237803402d08fa1b5b3b5b0174cf4d2d643d5884b23464a2b7b0a658f15" },
+]
+
+[[package]]
+name = "pycodestyle"
+version = "2.14.0"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple/" }
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/11/e0/abfd2a0d2efe47670df87f3e3a0e2edda42f055053c85361f19c0e2c1ca8/pycodestyle-2.14.0.tar.gz", hash = "sha256:c4b5b517d278089ff9d0abdec919cd97262a3367449ea1c8b49b91529167b783" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/d7/27/a58ddaf8c588a3ef080db9d0b7e0b97215cee3a45df74f3a94dbbf5c893a/pycodestyle-2.14.0-py2.py3-none-any.whl", hash = "sha256:dd6bf7cb4ee77f8e016f9c8e74a35ddd9f67e1d5fd4184d86c3b98e07099f42d" },
+]
+
+[[package]]
+name = "pyflakes"
+version = "3.4.0"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple/" }
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/45/dc/fd034dc20b4b264b3d015808458391acbf9df40b1e54750ef175d39180b1/pyflakes-3.4.0.tar.gz", hash = "sha256:b24f96fafb7d2ab0ec5075b7350b3d2d2218eab42003821c06344973d3ea2f58" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/c2/2f/81d580a0fb83baeb066698975cb14a618bdbed7720678566f1b046a95fe8/pyflakes-3.4.0-py2.py3-none-any.whl", hash = "sha256:f742a7dbd0d9cb9ea41e9a24a918996e8170c799fa528688d40dd582c8265f4f" },
+]
+
+[[package]]
+name = "tomlkit"
+version = "0.14.0"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple/" }
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/c3/af/14b24e41977adb296d6bd1fb59402cf7d60ce364f90c890bd2ec65c43b5a/tomlkit-0.14.0.tar.gz", hash = "sha256:cf00efca415dbd57575befb1f6634c4f42d2d87dbba376128adb42c121b87064" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/b5/11/87d6d29fb5d237229d67973a6c9e06e048f01cf4994dee194ab0ea841814/tomlkit-0.14.0-py3-none-any.whl", hash = "sha256:592064ed85b40fa213469f81ac584f67a4f2992509a7c3ea2d632208623a3680" },
+]
+
+[[package]]
+name = "variable-declaration-checker"
+version = "0.1.2"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple/" }
+dependencies = [
+    { name = "flake8" },
+]
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/46/42/1e94eded56f23625bdf6c1c8c5fbcadfd67c8062ecd994a73726fc1bb9de/variable_declaration_checker-0.1.2.tar.gz", hash = "sha256:2b3505b68e80290016e2c4b8189146a39c93fbbc5951ea289b02981d1cd638e0" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/cd/5f/879c5baa4e99a23293d3bf44bbe1689f76def06341decf249e8eaedfd3e4/variable_declaration_checker-0.1.2-py3-none-any.whl", hash = "sha256:c5b974ca1d76df78bda9560a6c74d92dfb2e7b087a64d8f341b6c3267cc51dae" },
+]

@@ -1,0 +1,31 @@
+[project]
+name = "li-logging"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    
+]
+requires-python = ">=3.12"
+dependencies = [
+    "li-basic-utilities",
+    "mime-bytes-py>=0.1.1",
+    "tomlkit>=0.14.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+li-basic-utilities = { path = "../li-basic-utilities", editable = true }
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true
+
+[dependency-groups]
+dev = [
+    "flake8>=7.3.0",
+    "variable-declaration-checker>=0.1.2",
+]

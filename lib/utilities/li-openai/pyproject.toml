@@ -1,0 +1,32 @@
+[project]
+name = "li-openai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    
+]
+requires-python = ">=3.12"
+dependencies = [
+    "instructor>=1.14.5",
+    "li-llm-messages",
+    "li-logging",
+    "openai>=2.30.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "variable-declaration-checker>=0.1.2",
+]
+
+[tool.uv.sources]
+li-llm-messages = { path = "../li-llm-messages", editable = true }
+li-logging = { path = "../li-logging", editable = true }
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true

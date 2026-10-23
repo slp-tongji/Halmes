@@ -1,0 +1,1 @@
+from li_nltk_wrapper.cross_process_nltk_wrapper import CrossProcessNltkWrapper as CrossProcessNltkWrapper

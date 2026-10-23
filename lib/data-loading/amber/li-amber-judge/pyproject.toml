@@ -1,0 +1,35 @@
+[project]
+name = "li-amber-judge"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    
+]
+requires-python = ">=3.12"
+dependencies = [
+    "li-amber-input-provider",
+    "li-data-loader",
+    "li-nltk-wrapper",
+    "li-openai",
+    "spacy>=3.8.14",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+li-data-loader = { path = "../../li-data-loader", editable = true }
+li-amber-input-provider = { path = "../li-amber-input-provider", editable = true }
+li-openai = { path = "../../../utilities/li-openai", editable = true }
+li-nltk-wrapper = { path = "../../../utilities/li-nltk-wrapper", editable = true }
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true
+
+[dependency-groups]
+dev = [
+    "variable-declaration-checker>=0.1.2",
+]

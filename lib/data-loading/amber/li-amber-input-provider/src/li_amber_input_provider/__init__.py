@@ -1,0 +1,3 @@
+from li_amber_input_provider.amber_inputs import AmberInputs as AmberInputs
+from li_amber_input_provider.amber_inputs_discriminative import AmberInputsDiscriminative as AmberInputsDiscriminative
+from li_amber_input_provider.amber_inputs_generative import AmberInputsGenerative as AmberInputsGenerative

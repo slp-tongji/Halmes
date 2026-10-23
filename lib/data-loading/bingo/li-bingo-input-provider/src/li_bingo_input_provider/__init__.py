@@ -1,0 +1,2 @@
+from li_bingo_input_provider.bingo_inputs_sub import BingoInputsSub as BingoInputsSub
+from li_bingo_input_provider.bingo_inputs import BingoInputs as BingoInputs

@@ -1,0 +1,32 @@
+[project]
+name = "li-coco-judge"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    
+]
+requires-python = ">=3.12"
+dependencies = [
+    "nltk>=3.9.4",
+    "li-data-loader",
+    "li-nltk-wrapper",
+    "frozendict>=2.4.7",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+li-data-loader = { path = "../../li-data-loader", editable = true }
+li-nltk-wrapper = { path = "../../../utilities/li-nltk-wrapper", editable = true }
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true
+
+[dependency-groups]
+dev = [
+    "variable-declaration-checker>=0.1.2",
+]

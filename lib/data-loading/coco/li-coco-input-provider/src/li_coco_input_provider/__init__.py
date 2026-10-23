@@ -1,0 +1,1 @@
+from li_coco_input_provider.coco_inputs import CocoInputs as CocoInputs

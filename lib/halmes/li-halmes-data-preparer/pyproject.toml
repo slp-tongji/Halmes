@@ -1,0 +1,29 @@
+[project]
+name = "li-halmes-data-preparer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    
+]
+requires-python = ">=3.12"
+dependencies = [
+    "li-halmes-model",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "torch>=2.11.0",
+    "variable-declaration-checker>=0.1.2",
+]
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true
+
+[tool.uv.sources]
+li-halmes-model = { path = "../li-halmes-model", editable = true }

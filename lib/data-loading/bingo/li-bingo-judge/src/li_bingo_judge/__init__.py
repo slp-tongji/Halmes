@@ -1,0 +1,3 @@
+from li_bingo_judge.bingo_judge import BingoJudge as BingoJudge
+from li_bingo_judge.bingo_judge_sub import BingoJudgeSub as BingoJudgeSub
+from li_bingo_judge.bingo_judgement import BingoJudgement as BingoJudgement

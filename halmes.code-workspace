@@ -1,0 +1,140 @@
+{
+    "folders": [
+        {
+            "name": "MANAGING",
+            "path": "./managing"
+        },
+        {
+            "name": "[[Halmes]] configurations",
+            "path": "./halmes/li-halmes-configurations"
+        },
+        {
+            "name": "[[Halmes]] generate data",
+            "path": "./halmes/li-halmes-generate-data"
+        },
+        {
+            "name": "[[Halmes]] label data",
+            "path": "./halmes/li-halmes-label-data"
+        },
+        {
+            "name": "[[Halmes]] split datasets",
+            "path": "./halmes/li-halmes-split-datasets"
+        },
+        {
+            "name": "[[Halmes]] train halmes",
+            "path": "./halmes/li-halmes-train-halmes"
+        },
+        {
+            "name": "[[Halmes]] validate checkpoints",
+            "path": "./halmes/li-halmes-validate-checkpoints"
+        },
+        {
+            "name": "[[Halmes]] inference",
+            "path": "./halmes/li-halmes-inference"
+        },
+        {
+            "name": "[[Halmes]] score inference outputs",
+            "path": "./halmes/li-halmes-score-inference-outputs"
+        },
+        {
+            "name": "[Halmes] halmes model",
+            "path": "./lib/halmes/li-halmes-model"
+        },
+        {
+            "name": "[Halmes] halmes data preparer",
+            "path": "./lib/halmes/li-halmes-data-preparer"
+        },
+        {
+            "name": "[Data] data loader",
+            "path": "./lib/data-loading/li-data-loader"
+        },
+        {
+            "name": "[Data] amber input provider",
+            "path": "./lib/data-loading/amber/li-amber-input-provider"
+        },
+        {
+            "name": "[Data] amber judge",
+            "path": "./lib/data-loading/amber/li-amber-judge"
+        },
+        {
+            "name": "[Data] coco input provider",
+            "path": "./lib/data-loading/coco/li-coco-input-provider"
+        },
+        {
+            "name": "[Data] coco judge",
+            "path": "./lib/data-loading/coco/li-coco-judge"
+        },
+        {
+            "name": "[Data] bingo input provider",
+            "path": "./lib/data-loading/bingo/li-bingo-input-provider"
+        },
+        {
+            "name": "[Data] bingo judge",
+            "path": "./lib/data-loading/bingo/li-bingo-judge"
+        },
+        {
+            "name": "[Data] mmhalbench input provider",
+            "path": "./lib/data-loading/mmhalbench/li-mmhalbench-input-provider"
+        },
+        {
+            "name": "[Data] mmhalbench judge",
+            "path": "./lib/data-loading/mmhalbench/li-mmhalbench-judge"
+        },
+        {
+            "name": "[Utilities] basic utilities",
+            "path": "./lib/utilities/li-basic-utilities"
+        },
+        {
+            "name": "[Utilities] nltk wrapper",
+            "path": "./lib/utilities/li-nltk-wrapper"
+        },
+        {
+            "name": "[Utilities] logging",
+            "path": "./lib/utilities/li-logging"
+        },
+        {
+            "name": "[Utilities] image operating",
+            "path": "./lib/utilities/li-image-operating"
+        },
+        {
+            "name": "[Utilities] llm messages",
+            "path": "./lib/utilities/li-llm-messages"
+        },
+        {
+            "name": "[Utilities] openai",
+            "path": "./lib/utilities/li-openai"
+        }
+    ],
+    "settings": {
+        "python-envs.workspaceSearchPaths": [
+            "./.venv"
+        ],
+		"python.analysis.include": [
+			"src/**/*"
+		],
+        "python.analysis.userFileIndexingLimit": -1,
+        "python.analysis.enablePytestSupport": false,
+        "python.analysis.persistAllIndices": true,
+        "python.analysis.packageIndexDepths": [
+			{ "name": "anyio", "depth": 0 },
+			{ "name": "ast", "depth": 0 },
+			{ "name": "click", "depth": 0 },
+        ],
+        "flake8.enabled": true,
+        "flake8.importStrategy": "fromEnvironment",
+        "flake8.interpreter": ["${workspaceFolder}/.venv/bin/python"],
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Debug Current File",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${file}",
+                "console": "integratedTerminal"
+            }
+        ],
+        "compounds": []
+    }
+}

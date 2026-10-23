@@ -1,0 +1,3 @@
+[flake8]
+select = WVarDec
+exclude = .venv

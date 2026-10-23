@@ -1,0 +1,2 @@
+from li_coco_judge.coco_judge import CocoJudge as CocoJudge
+from li_coco_judge.coco_judgement import CocoJudgement as CocoJudgement

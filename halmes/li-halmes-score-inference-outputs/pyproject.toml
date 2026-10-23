@@ -1,0 +1,31 @@
+[project]
+name = "li-halmes-score-inference-outputs"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    
+]
+requires-python = ">=3.12"
+dependencies = [
+    "li-halmes-configurations",
+    "more-itertools>=11.0.2",
+    "sqlite-utils>=3.39",
+    "torch>=2.11.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "variable-declaration-checker>=0.1.2",
+]
+
+[tool.uv.sources]
+li-halmes-configurations = { path = "../li-halmes-configurations", editable = true }
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true
