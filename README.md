@@ -2,7 +2,7 @@
 
 ## News
 
-- 🎉 HALMES has been accepted to **NeurIPS 2026**!
+- [2026-09-25] 🎉 HALMES has been accepted to **NeurIPS 2026**!
 
 ## Abstract
 
