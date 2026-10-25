@@ -54,7 +54,7 @@ uv sync
 cd ../..
 ```
 
-Each package has its own environment. Run commands from the indicated package directory; `uv run` resolves and installs its dependencies automatically.
+Each package has its own environment. Run commands from the indicated package directory; `uv sync` / `uv run` resolves and installs its dependencies automatically.
 
 ## Data and Configuration
 
