@@ -45,9 +45,10 @@ Requires [uv](https://docs.astral.sh/uv/), and an NVIDIA GPU with enough memory 
 ```bash
 git clone https://github.com/slp-tongji/Halmes.git
 cd Halmes
-mkdir -p managing/links/outputs
 
-# Initialize the feature-collection environment.
+mkdir -p managing/links/outputs    # or, a more recommended approach is to create a symbolic link
+
+# Initialize the feature-collection environment, as an example.
 cd halmes/li-halmes-generate-data
 uv sync
 cd ../..
