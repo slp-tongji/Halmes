@@ -40,12 +40,9 @@ Contrastive decoding can mitigate hallucinations in large vision-language models
 
 ## Installation
 
-Requires **Python 3.12+**, **uv**, and an NVIDIA GPU with enough memory for the target LVLM. Experiments were run on Ubuntu with NVIDIA A800 GPUs.
+Requires [uv](https://docs.astral.sh/uv/), and an NVIDIA GPU with enough memory for the target LVLM. Experiments were run on Ubuntu with NVIDIA A800 GPUs.
 
 ```bash
-# Install uv if needed.
-pip install uv
-
 git clone https://github.com/slp-tongji/Halmes.git
 cd Halmes
 mkdir -p managing/links/outputs
