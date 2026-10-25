@@ -1,24 +1,21 @@
-# HALMES: Knowing When to Intervene in LVLM Hallucination Mitigation
+<h1 align="center">HALMES: Knowing When to Intervene<br>in LVLM Hallucination Mitigation</h1>
 
-## Environment Setup
+## News
 
-### Requirements and Compatibility
+- 🎉 HALMES has been accepted to **NeurIPS 2026**!
 
-Running this project requires a GPU with sufficient VRAM: While training HALMES itself is lightweight, it operates as a plug-in for Large Vision-Language Model (LVLM) inference. Therefore, generating training its data and evaluating its performance demands adequate computational resources to perform inference on these large models.
+## Abstract
 
-We conducted our experiments primarily on Ubuntu using NVIDIA A800. However, we have avoided platform-specific features or shell-dependent scripts, so the project should run smoothly on any major platform, including Windows. If you encounter any issues on any major platform, please feel free to open an issue.
+Contrastive decoding can mitigate hallucinations in large vision-language models, but applying it throughout generation introduces unnecessary intervention and computation. We introduce **HALMES**, a lightweight detector that uses internal attention features to estimate hallucination risk and selectively activate contrastive decoding. HALMES is trained on extracted features while keeping the underlying LVLM frozen, and can be integrated with different contrastive decoding methods.
 
-### Environment Management
+<p align="center">
+  <a href="managing/assets/framework.png">
+    <img src="managing/assets/framework.png" alt="HALMES: attention-based hallucination detection and selective contrastive decoding." width="100%">
+  </a>
+</p>
+<p align="center"><em>HALMES intervenes selectively on segments identified as hallucination-prone.</em></p>
 
-As the project is divided into sub-packages to resolve historical dependency conflicts, managing it with standard pip is challenging. Therefore, we use uv, a modern Python project manager, for environment management. For installation instructions, please refer to [the official guide](https://docs.astral.sh/uv/getting-started/installation/). If you encounter any issues using uv with this project, we will do our best to provide support.
-
-With uv, you don't need to worry about package installation: simply use `uv run` to execute programs, and dependencies will be handled automatically. The only potential complication is PyTorch. We recommend updating your CUDA version to the latest release, which allows you to use the standard version from PyPI without additional configuration. If you need to install PyTorch from a specific source, please refer to [the official guide](https://docs.astral.sh/uv/guides/integration/pytorch/#using-uv-with-pytorch).
-
-### VS Code Support
-
-We have configured a VS Code multi-root workspace. You can get started immediately by opening the `halmes.code-workspace` file. For tips on optimizing your development experience in VS Code and discussions of known issues, please see [the "VS Code" section](#vs-code).
-
-## Directory Structure
+## Repository Structure
 
 ```text
 .
@@ -41,306 +38,157 @@ We have configured a VS Code multi-root workspace. You can get started immediate
 └── README.md                              // This documentation file.
 ```
 
-## Data Preparation
+## Installation
 
-To fully run our code, the following datasets are needed. We recommend storing the datasets directly at `managing/links` or linking them here via symbolic links, forming the following structure:
-
-```text
-links
-├── datasets
-│   ├── AMBER
-│   │   └── ...
-│   ├── Bingo
-│   │   └── ...
-│   ├── MMHal-Bench
-│   │   └── ...
-│   └── MS-COCO
-│       └── ...
-└── ...
-```
-
-Note: Scoring on certain datasets requires calling external LLMs and accessing tools such as nltk and spacy. While these tools are not listed here, they may require additional downloading or configuration. Please refer to [the "Configuration" section](#configuration) for details.
-
-### COCO
-
-The COCO dataset can be downloaded [here](https://cocodataset.org/). Specifically, its `train2014` will be used for training and validation, while `val2014` will be used for testing. We recommend extracting the archives and organizing the files into the following directory structure:
-
-```text
-MS-COCO
-├── annotations
-│   ├── captions_train2014.json
-│   ├── captions_val2014.json
-│   ├── instances_train2014.json
-│   ├── instances_val2014.json
-│   ├── person_keypoints_train2014.json
-│   └── person_keypoints_val2014.json
-├── train2014
-│   ├── COCO_train2014_000000000009.jpg
-│   ├── COCO_train2014_000000000025.jpg
-│   └── ...
-└── val2014
-    ├── COCO_val2014_000000000042.jpg
-    ├── COCO_val2014_000000000073.jpg
-    └── ...
-```
-
-### AMBER
-
-Please refer to [their GitHub repository](https://github.com/junyangwang0410/AMBER). You will need to clone the repository and download the images shared via their Google Drive link. We recommend organizing the files into the following directory structure:
-
-```text
-AMBER
-├── data         // From GitHub
-│   ├── query
-│   │   ├── query_all.json
-│   │   ├── query_discriminative-attribute.json
-│   │   ├── query_discriminative-existence.json
-│   │   ├── query_discriminative.json
-│   │   ├── query_discriminative-relation.json
-│   │   └── query_generative.json
-│   ├── annotations.json
-│   ├── metrics.txt
-│   ├── relation.json
-│   └── safe_words.txt
-└── image        // From Google Drive
-    ├── AMBER_1000.jpg
-    ├── AMBER_1001.jpg
-    └── ...
-```
-
-### Bingo
-
-The Bingo dataset can be downloaded [here](https://huggingface.co/datasets/PahaII/Bingo). We recommend organizing it into the following directory structure:
-
-```text
-Bingo
-├── images
-│   ├── factual_factual_0.png
-│   ├── factual_factual_10.png
-│   └── ...
-├── Factual.json
-├── I2I.json
-├── OCR.json
-├── Region.json
-└── T2I.json
-```
-
-### MMHal-Bench
-
-The MMHal-Bench dataset can be downloaded [here](https://huggingface.co/datasets/Shengcao1006/MMHal-Bench). You may clone the Hugging Face repository or simply download `test_data.zip` (the contents are identical). We recommend the following directory structure:
-
-```text
-MMHal-Bench
-├── images
-│   ├── 10172500456_1f40b6bd38_o.jpg
-│   ├── 11715451803_24861529ab_o.jpg
-│   └── ...
-└── response_template.json
-```
-
-### How to Add Other Datasets?
-
-All dataset inputs are handled uniformly via the `DatasetInputProvider` interface. For implementation details, please refer to the specific dataset examples located in `lib/data-loading`.
-
-- **For Training**: To use a new dataset for training, you should implement the `SupportedJudge` interface found in `halmes/li-halmes-label-data`. You can use our existing implementation for the COCO dataset as a reference.
-- **For Testing**: To use a dataset for testing, you should implement the `SupportedJudge` interface located in `halmes/li-halmes-score-inference-outputs`. You can refer to our current implementations for AMBER, Bingo, COCO, and MMHal-Bench.
-
-## LVLM Preparation
-
-Similar to the datasets, we recommend storing the models directly at `managing/links/llms` or linking them here, forming the following structure:
-
-```text
-links
-├── datasets
-│   └── ...
-├── llms
-│   ├── InternVL3_5-8B-HF
-│   │   ├── added_tokens.json
-│   │   ├── chat_template.jinja
-│   │   └── ...
-│   └── Qwen3-VL-8B-Instruct
-│       ├── chat_template.json
-│       ├── config.json
-│       └── ...
-└── ...
-```
-
-InternVL3.5 8B can be downloaded [here](https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF), and Qwen3 VL 8B [here](https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct).
-
-### How to Add Other Models?
-
-- **For Training**: To generate training data specific to a new model, you should to implement the `SupportedLlm` interface in `halmes/li-halmes-generate-data`. Additionally, to ensure precise token positioning, you should implement the `SupportedTokenizer` interface in `halmes/li-halmes-label-data`.
-- **For Testing**: To evaluate various contrastive decoding methods on a new model, you should to implement the `SupportedLlm` interface in `halmes/li-halmes-inference`.
-
-You can refer to the existing implementations for InternVL3.5 8B and Qwen3 VL 8B as templates.
-
-### How to Add Other Contrastive Decoding Methods?
-
-Because contrastive decoding methods must be embedded within the model's inference loop, they often require specialized handling based on the model's specific architecture. Consequently, these methods are abstracted within the `SupportedLlm` implementation located in `halmes/li-halmes-inference`.
-
-## Configuration
-
-Each executable script requires individual configuration. However, we recommend first setting up global presets in `halmes/li-halmes-configurations`, which can then be directly called by subsequent scripts.
-
-Note that presets from this package will be invoked explicitly. They are not "hidden" or automatically injected into other scripts. This means you do not need to complete all configurations at once; you can safely leave sections unfinished without worrying about scripts using incorrect or unknown default values in the background.
-
-### Common Configuration
-
-In `halmes_common_configuration.py`, you can configure the specific GPU device to be used.
-
-### Output Path Configuration
-
-In `halmes_output_path_configuration.py`, you can define where output files are stored.
-
-By default, we recommend creating a directory (or a symbolic link) at `managing/links/outputs`, which will serve as the root for all generated stuffs.
-
-### External LLM Configuration
-
-In `halmes_openai_llm_configuration.py`, you can configure access to external LLMs (e.g., GPT-4o) used for dataset scoring.
-
-By default, API keys are read from `managing/links/secrets/openai`. You can modify this logic as needed, but be sure to ensure the security.
-
-### Tool Configuration
-
-In `halmes_tool_configuration.py`, you can configure access to external tools like nltk and en_core_web_lg, which are primarily used for scoring.
-
-We recommend using the default settings and placing the tools in `managing/links/tools` using the following structure:
-
-```text
-tools
-├── nltk
-│   └── nltk_data
-│       ├── collections
-│       │   └── ...
-│       ├── packages
-│       │   └── ...
-│       └── ...
-└── spacy
-    └── en_core_web_lg
-        ├── en_core_web_lg-3.8.0
-        │   └── ...
-        ├── __init__.py
-        └── meta.json
-```
-
-These tools can be downloaded from [the nltk_data repository](https://github.com/nltk/nltk_data) and [the spacy-models repository](https://github.com/explosion/spacy-models/releases/tag/en_core_web_lg-3.8.0).
-
-### Target LVLM Configuration
-
-In `halmes_target_llm_configuration.py`, you can configure the target LVLMs.
-
-- The `id` parameter determines the output directory name (ensure it contains no special characters).
-- The `model_type` parameter is used for assertion checks to prevent logic errors; you can extend or ignore this as needed.
-
-If you follow the recommended method of placing models in `managing/links/llms`, no adjustments to this file are necessary.
-
-### Input Feature Configuration
-
-In `halmes_feature_selector_configuration.py`, you can customize the features input into the HALMES model. This allows you to remove specific inputs for ablation studies, as demonstrated in Table 1 of our paper.
-
-- The `id` parameter of `HalmesFeatureSelector` determines the output path.
-
-Under normal circumstances, this file does not require modification.
-
-### Dataset Configuration
-
-In `halmes_dataset_configuration.py`, you can configure the datasets.
-
-If you have placed your datasets in `managing/links/datasets` as recommended, no changes are required.
-
-## Running the Project
-
-### Step 1: Change the Working Directory
-
-First, navigate to the package corresponding to the task you wish to perform. For example, to generate data, change your current working directory to `halmes/li-halmes-generate-data`.
-
-For a full list of available packages and their purposes, please refer to [the "Directory Structure" section](#directory-structure).
-
-### Step 2: Choose a Configuration
-
-Using data generation as an example, we provide two default scripts: `halmes_generate_data_qwen3_vl_8b.py` and `halmes_generate_data_intern_vl_3d5_8b.py`. The former generates data for Qwen3 VL 8B, while the latter is for InternVL3.5 8B.
-
-The only difference between these scripts is the content of their `Config` class. You can easily duplicate these scripts and modify the configuration to suit your specific needs. (Naming them `*.gitignored.py` to prevent your machine-specific configuration from being tracked by git.)
-
-### Step 3: Execute the Script
-
-Assuming you have chosen Qwen3 VL 8B, you can run the script directly using the following command (ensure you are still inside the `halmes/li-halmes-generate-data` directory):
+Requires **Python 3.12+**, **uv**, and an NVIDIA GPU with enough memory for the target LVLM. Experiments were run on Ubuntu with NVIDIA A800 GPUs.
 
 ```bash
-uv run ./src/halmes_generate_data_qwen3_vl_8b.py
+# Install uv if needed.
+pip install uv
+
+git clone https://github.com/slp-tongji/Halmes.git
+cd Halmes
+mkdir -p managing/links/outputs
+
+# Initialize the feature-collection environment.
+cd halmes/li-halmes-generate-data
+uv sync
+cd ../..
 ```
 
-uv will automatically detect the dependencies listed in `pyproject.toml`, install them, and begin execution.
+Each package has its own environment. Run commands from the indicated package directory; `uv run` resolves and installs its dependencies automatically.
 
-### Full Example
+## Data and Configuration
 
-Below is a complete sample for generating data, training HALMES, and evaluating the performance on Qwen3 VL 8B.
+
+| Component              | Supported options                        |
+| ---------------------- | ---------------------------------------- |
+| LVLMs                  | Qwen3-VL-8B-Instruct, InternVL3.5-8B-HF  |
+| Detector training data | COCO`train2014`                          |
+| Evaluation datasets    | COCO`val2014`, AMBER, Bingo, MMHal-Bench |
+| Contrastive decoding   | VCD, M3ID, AvisC, SID, Self-Aug          |
+
+Place local models and datasets under `managing/links/llms/` and `managing/links/datasets/`, or set their paths in `halmes/li-halmes-configurations/src/li_halmes_configurations/`:
+
+<details>
+<summary><b>Configuration files and evaluation dependencies</b></summary>
+
+
+| Configuration file                    | Setting                             |
+| ------------------------------------- | ----------------------------------- |
+| `halmes_target_llm_configuration.py`  | Model paths and generation settings |
+| `halmes_dataset_configuration.py`     | Dataset paths and judges            |
+| `halmes_common_configuration.py`      | GPU device                          |
+| `halmes_output_path_configuration.py` | Output paths                        |
+| `halmes_tool_configuration.py`        | NLTK data and spaCy model paths     |
+| `halmes_openai_llm_configuration.py`  | External judge endpoint and API key |
+
+COCO labeling and scoring require NLTK resources. AMBER scoring also requires the spaCy model `en_core_web_lg`. Configure GPT-4o access for Bingo and MMHal-Bench. The current AMBER preset also initializes an API client, although its generative judge does not use it.
+
+The default model folders are `Qwen3-VL-8B-Instruct` and `InternVL3_5-8B-HF`. Dataset folders are `MS-COCO`, `AMBER`, `Bingo`, and `MMHal-Bench`. The presets in `halmes_dataset_configuration.py` specify the expected files within each folder.
+
+</details>
+
+## Running HALMES
+
+**Attention features → detector training → inference → evaluation.**
+
+**All commands below start at the repository root and use Qwen3-VL.** For InternVL, replace `qwen3_vl_8b.py` with `intern_vl_3d5_8b.py`. Adjust each script's `Config` class to change datasets, methods, or sample counts.
+
+### Attention Feature Collection
+
+Collect attention features on COCO, label hallucinations, and prepare the detector's training and validation splits.
 
 ```bash
-# assume that it's now at the root directory of the repository
-
-# to generate the datasets for training HALMES
+# 1. Generate captions and collect attention features.
 cd halmes/li-halmes-generate-data
 uv run src/halmes_generate_data_qwen3_vl_8b.py
 cd ../..
 
+# 2. Assign hallucination labels.
 cd halmes/li-halmes-label-data
 uv run src/halmes_label_data_qwen3_vl_8b.py
 cd ../..
 
+# 3. Split the detector dataset.
 cd halmes/li-halmes-split-datasets
 uv run src/halmes_split_datasets_qwen3_vl_8b.py
 cd ../..
+```
 
-# to train HALMES
+Prepared splits: `managing/links/outputs/halmes/datasets/qwen3_vl_8b/{train,validation}.pt`.
+
+### Training
+
+Train the HALMES detector and select the checkpoint with the highest validation AUROC. The LVLM weights remain frozen.
+
+```bash
+# Train the detector.
 cd halmes/li-halmes-train-halmes
 uv run src/halmes_train_halmes_qwen3_vl_8b.py
 cd ../..
 
+# Select the best checkpoint.
 cd halmes/li-halmes-validate-checkpoints
 uv run src/halmes_validate_checkpoints_qwen3_vl_8b.py
 cd ../..
+```
 
-# to inference with certain contrastive decoding methods
+Selected checkpoint:
+
+```text
+managing/links/outputs/halmes/best_checkpoints/qwen3_vl_8b/1-36/halmes.pt
+```
+
+Keep the model ID and feature selector (`1-36` by default) consistent across training, validation, inference, and evaluation.
+
+### Inference
+
+Run generation with the selected checkpoint. If you already have a compatible detector, place it at the checkpoint path above and start here.
+
+```bash
 cd halmes/li-halmes-inference
 uv run src/halmes_inference_qwen3_vl_8b.py
 cd ../..
+```
 
+Select methods in `Config.llms()` and benchmarks in `Config.dataset()`. The default runs nucleus sampling, beam search, five CD methods, and their five HALMES variants across all four evaluation datasets.
+
+Responses are saved to:
+
+```text
+managing/links/outputs/halmes/inference_outputs/qwen3_vl_8b/1-36/outputs.db
+```
+
+### Evaluation
+
+Score the saved responses using the corresponding benchmark judges.
+
+```bash
 cd halmes/li-halmes-score-inference-outputs
 uv run src/halmes_score_inference_outputs_qwen3_vl_8b.py
 cd ../..
 ```
 
-### Multi-threading
+Per-sample scores are saved as SQLite databases under:
 
-Some scripts in this project support multi-threading. To maintain a clean interface and avoid log interleaving, we do not print detailed execution progress to the console. Instead, logs are directed to a dedicated directory. The console will display the location of the log file at the start and print `Done.` upon completion.
+```text
+managing/links/outputs/halmes/inference_outputs_scores/qwen3_vl_8b/1-36/
+```
 
-Note that a "Done" message signifies the program has finished its execution cycle, but not necessarily that every task was successful. You should inspect the log files to verify the status of individual tasks. For any tasks that encounter exceptions, you can locate specific task logs to diagnose the issue.
+Aggregate scores according to each benchmark's metric definition. For a subset of benchmarks, update `Config.dataset_judge()` to match the inference configuration.
 
-Some scripts also include a "Skip Existing" feature. If a run fails or is interrupted, you can simply restart the script; it will automatically identify completed tasks and attempt to retry only the failed or missing ones. For efficiency and reliability, we use SQLite databases for outputs instead of standard CSV or Excel files. You can use some SQLite management tools (such as the SQLite Viewer extension in Visual Studio Code) to browse these files as easily as a regular spreadsheet.
+#### Add Your Own Dataset
 
-## VS Code
+1. **Load inputs:** implement `DatasetInputProvider` under `lib/data-loading/`. Provide `ids` and `get(id)`, which returns image/text messages. Follow an existing loader.
+2. **Define scoring:** implement `SupportedJudge` in `halmes/li-halmes-score-inference-outputs/` with `ids`, `get_database_id(id)`, and `judge(id, response, log)`. Follow an existing judge wrapper.
+3. **Connect both:** add dataset/judge presets in `halmes_dataset_configuration.py`, then select them in inference's `Config.dataset()` and evaluation's `Config.dataset_judge()`.
+4. **Run:** add any new loader/judge package to the importing package's `pyproject.toml`, then run the inference and evaluation commands above. Use matching sample IDs in the loader and judge, and unique IDs across datasets.
 
-### Recommended Extensions
-- **Python**: For writing and debugging Python scripts.
-- **Even Better TOML**: For editing and viewing TOML files (including `pyproject.toml` and our log files).
-- **SQLite Viewer**: For browsing and managing SQLite database files.
-- **vscode-pydata-viewer**: For viewing data saved with `torch.save`.
-- **Flake8**: For certain linting support.
+To use the dataset for **detector training**, also implement a labeling judge in `halmes/li-halmes-label-data/` and select it in the feature-collection and labeling scripts.
 
-### Installing Dependencies
+> Each script prints its log location. Check `log.csv` and detailed logs for failed tasks before proceeding. `Done.` does not guarantee every task succeeded.
 
-To enable proper type hints and autocompletion in VS Code, you must first install the dependency packages (for each package):
+## Citation
 
-- Navigate into the package folder.
-- Run `uv sync` to install the dependencies.
-
-You don't need to manually `cd` into each package directory. When creating a new terminal in VS Code, you will be asked to select one package from a list, and the terminal will open in that directory by default.
-
-After installation, we recommend restarting VS Code (or using the `Developer: Reload Window` command) to ensure the Python environment is correctly loaded. Additionally, if you add an editable dependency, you may need to restart the Python language server for the changes to be detected.
-
-If you notice significant lag in VS Code's type hints or IntelliSense, you can comment out packages you are not currently editing in the `halmes.code-workspace`. This prevents Pylance from analyzing them unnecessarily. Note that packages depending on `transformers` are known to cause Pylance performance issues (see [this issue](https://github.com/microsoft/pylance-release/issues/7615) for details).
-
-### Running the Project
-
-In VS Code, you can run scripts directly by opening the file and pressing `F5`. You do not need to manually use `uv run` in the terminal; VS Code will automatically navigate to the correct working directory and select the appropriate Python environment for you.
+<!-- BibTeX will be added here. -->
